@@ -1,2 +1,2 @@
 # emprende
-Aplicación para que emprendedores con similitudes formen empresa 
+Aplicación para que emprendedores con similitudes formen empresa. 
