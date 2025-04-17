@@ -1,7 +1,13 @@
 import React from "react";
+import Formulario from "./components/Formulario";
 
 const App = () => {
-    return <h1>¡Bienvenido a Emprende App!</h1>;
+    return (
+        <div>
+            <h1>¡Bienvenido a Emprende App!</h1>
+            <Formulario />
+        </div>
+    );
 };
 
 export default App;
