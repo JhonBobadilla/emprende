@@ -38,6 +38,8 @@ const Formulario = () => {
         titulo: "",
         opcion: "",
         telefono: "",
+        descripcionProyecto: "", // Nuevo campo para descripción del proyecto
+        rol: "", // Nuevo campo para el rol en el emprendimiento
     });
 
     const [ciudadesDisponibles, setCiudadesDisponibles] = useState([]);
@@ -129,6 +131,8 @@ const Formulario = () => {
             const nuevoValor = value.replace(/\D/g, "");
             setFormData({ ...formData, [name]: nuevoValor });
             setErrorEdad(nuevoValor && parseInt(nuevoValor) < 18 ? "Debes ser mayor de edad, si eres menor no puedes inscribirte." : "");
+        } else if (name === "emprendimiento") {
+            setFormData({ ...formData, [name]: value });
         } else if (name === "tipoEmprendimiento") {
             const titulos = value === "PRODUCTOS" ? Object.keys(productos) : value === "SERVICIOS" ? Object.keys(servicios) : [];
             setTitulosDisponibles(titulos);
@@ -144,6 +148,7 @@ const Formulario = () => {
             setFormData({ ...formData, [name]: nuevoValor });
         }
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (parseInt(formData.edad, 10) < 18) {
@@ -155,126 +160,164 @@ const Formulario = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>País:</label>
-            <select name="pais" value={formData.pais} onChange={handleChange} required>
-                <option value="">Selecciona un país</option>
-                {Object.keys(ciudadesPorPais).map((pais) => (
-                    <option key={pais} value={pais}>{pais}</option>
-                ))}
-            </select>
+        <label>País:</label>
+        <select name="pais" value={formData.pais} onChange={handleChange} required>
+            <option value="">Selecciona un país</option>
+            {Object.keys(ciudadesPorPais).map((pais) => (
+                <option key={pais} value={pais}>{pais}</option>
+            ))}
+        </select>
 
-            <label>Ciudad:</label>
-            <select name="ciudad" value={formData.ciudad} onChange={handleChange} required>
-                <option value="">Selecciona una ciudad</option>
-                {ciudadesDisponibles.map((ciudad, idx) => (
-                    <option key={idx} value={ciudad}>{ciudad}</option>
-                ))}
-            </select>
+        <label>Ciudad:</label>
+        <select name="ciudad" value={formData.ciudad} onChange={handleChange} required>
+            <option value="">Selecciona una ciudad</option>
+            {ciudadesDisponibles.map((ciudad, idx) => (
+                <option key={idx} value={ciudad}>{ciudad}</option>
+            ))}
+        </select>
 
-            <label>Nombres:</label>
-            <input type="text" name="nombres" value={formData.nombres} onChange={handleChange} required />
+        <label>Nombres:</label>
+        <input type="text" name="nombres" value={formData.nombres} onChange={handleChange} required />
 
-            <label>Apellidos:</label>
-            <input type="text" name="apellidos" value={formData.apellidos} onChange={handleChange} required />
+        <label>Apellidos:</label>
+        <input type="text" name="apellidos" value={formData.apellidos} onChange={handleChange} required />
 
-            <label>Sexo:</label>
-            <select name="sexo" value={formData.sexo} onChange={handleChange} required>
-                <option value="">Selecciona una opción</option>
-                <option value="FEMENINO">FEMENINO</option>
-                <option value="MASCULINO">MASCULINO</option>
-                <option value="OTRO">OTRO</option>
-            </select>
+        <label>Sexo:</label>
+        <select name="sexo" value={formData.sexo} onChange={handleChange} required>
+            <option value="">Selecciona una opción</option>
+            <option value="FEMENINO">FEMENINO</option>
+            <option value="MASCULINO">MASCULINO</option>
+            <option value="OTRO">OTRO</option>
+        </select>
 
-            <label>Edad:</label>
-            <input type="text" name="edad" value={formData.edad} onChange={handleChange} required />
-            {errorEdad && <p style={{ color: "red" }}>{errorEdad}</p>}
+        <label>Edad:</label>
+        <input type="text" name="edad" value={formData.edad} onChange={handleChange} required />
+        {errorEdad && <p style={{ color: "red" }}>{errorEdad}</p>}
 
-            {/* Casilla de Teléfono con Indicativo y Bandera dentro del Input */}
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="telefono">
-                    Teléfono
-                </label>
-                <div style={{ display: "flex", alignItems: "center", border: "1px solid #ccc", borderRadius: "5px", padding: "5px" }}>
-                    <span style={{ marginRight: "8px", display: "flex", alignItems: "center" }}>
-                        {formData.pais && `+${indicativoPais(formData.pais)}`}
-                        {codigosBandera[formData.pais] && (
-                            <img
-                                src={`https://flagcdn.com/w40/${codigosBandera[formData.pais]}.png`}
-                                alt={`${formData.pais} flag`}
-                                style={{ width: "20px", marginLeft: "5px" }}
-                            />
-                        )}
-                    </span>
-                    <input
-                        type="text"
-                        id="telefono"
-                        name="telefono"
-                        placeholder="Número de teléfono"
-                        value={formData.telefono}
-                        onChange={handleChange}
-                        required
-                        style={{ border: "none", outline: "none", flex: "1", padding: "5px" }}
-                    />
-                </div>
-            </div>
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                    Correo electrónico
-                </label>
+        {/* Casilla de Teléfono con Indicativo y Bandera dentro del Input */}
+        <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="telefono">
+                Teléfono
+            </label>
+            <div style={{ display: "flex", alignItems: "center", border: "1px solid black", borderRadius: "3px", width: "40%" }}>
+                <span style={{ marginRight: "8px", display: "flex", alignItems: "center" }}>
+                    {formData.pais && `+${indicativoPais(formData.pais)}`}
+                    {codigosBandera[formData.pais] && (
+                        <img
+                            src={`https://flagcdn.com/w40/${codigosBandera[formData.pais]}.png`}
+                            alt={`${formData.pais} flag`}
+                            style={{ width: "20px", marginLeft: "5px" }}
+                        />
+                    )}
+                </span>
                 <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="ejemplo@correo.com"
+                    type="text"
+                    id="telefono"
+                    name="telefono"
+                    placeholder="Número de teléfono"
+                    value={formData.telefono}
+                    onChange={handleChange}
                     required
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    style={{ border: "none", outline: "none", flex: "1", padding: "5px" }}
                 />
             </div>
+        </div>
 
-            <label>Estado del emprendimiento:</label>
-            <select name="emprendimiento" value={formData.emprendimiento} onChange={handleChange} required>
-                <option value="">Selecciona una opción</option>
-                <option value="AÚN NO INICIO MI EMPRENDIMIENTO">AÚN NO INICIO MI EMPRENDIMIENTO</option>
-                <option value="YA INICIÉ MI EMPRENDIMIENTO PERO AÚN NO GENERO UTILIDADES">YA INICIÉ MI EMPRENDIMIENTO PERO AÚN NO GENERO UTILIDADES</option>
-                <option value="YA INICIÉ MI EMPRENDIMIENTO Y YA GENERO UTILIDADES">YA INICIÉ MI EMPRENDIMIENTO Y YA GENERO UTILIDADES</option>
-            </select>
+        <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                Correo electrónico
+            </label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="ejemplo@correo.com"
+                required
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+        </div>
 
-            <label>Mi emprendimiento se centra en:</label>
-            <select name="tipoEmprendimiento" value={formData.tipoEmprendimiento} onChange={handleChange} required>
-                <option value="">Selecciona una opción</option>
-                <option value="PRODUCTOS">PRODUCTOS</option>
-                <option value="SERVICIOS">SERVICIOS</option>
-            </select>
+        <label>Estado del emprendimiento:</label>
+        <select name="emprendimiento" value={formData.emprendimiento} onChange={handleChange} required>
+            <option value="">Selecciona una opción</option>
+            <option value="AÚN NO INICIO MI EMPRENDIMIENTO">AÚN NO INICIO MI EMPRENDIMIENTO</option>
+            <option value="YA INICIÉ MI EMPRENDIMIENTO PERO AÚN NO GENERO UTILIDADES">YA INICIÉ PERO AÚN NO GENERO UTILIDADES</option>
+            <option value="YA INICIÉ MI EMPRENDIMIENTO Y YA GENERO UTILIDADES">YA INICIÉ Y YA GENERO UTILIDADES</option>
+        </select>
 
-            <label>Título del emprendimiento:</label>
-            <select name="titulo" value={formData.titulo} onChange={handleChange} required>
-                {formData.tipoEmprendimiento === ""
-                    ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
-                    : <>
-                        <option value="">Selecciona un título</option>
-                        {titulosDisponibles.map((titulo, idx) => (
-                            <option key={idx} value={titulo}>{titulo}</option>
-                        ))}
-                    </>
-                }
-            </select>
+        {/* Mostrar casillas condicionalmente */}
+        {formData.emprendimiento && formData.emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
+            <>
+                <label>Mi emprendimiento se centra en:</label>
+                <select name="tipoEmprendimiento" value={formData.tipoEmprendimiento} onChange={handleChange} required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="PRODUCTOS">PRODUCTOS</option>
+                    <option value="SERVICIOS">SERVICIOS</option>
+                </select>
 
-            <label>Opción específica:</label>
-            <select name="opcion" value={formData.opcion} onChange={handleChange} required>
-                {formData.titulo === ""
-                    ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
-                    : <>
-                        <option value="">Selecciona una opción</option>
-                        {opcionesDisponibles.map((opcion, idx) => (
-                            <option key={idx} value={opcion}>{opcion}</option>
-                        ))}
-                    </>
-                }
-            </select>
+                <label>Categoría:</label>
+                <select name="titulo" value={formData.titulo} onChange={handleChange} required>
+                    {formData.tipoEmprendimiento === ""
+                        ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
+                        : <>
+                            <option value="">Selecciona un título</option>
+                            {titulosDisponibles.map((titulo, idx) => (
+                                <option key={idx} value={titulo}>{titulo}</option>
+                            ))}
+                        </>
+                    }
+                </select>
+
+                <label>Opción específica:</label>
+                <select name="opcion" value={formData.opcion} onChange={handleChange} required>
+                    {formData.titulo === ""
+                        ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
+                        : <>
+                            <option value="">Selecciona una opción</option>
+                            {opcionesDisponibles.map((opcion, idx) => (
+                                <option key={idx} value={opcion}>{opcion}</option>
+                            ))}
+                        </>
+                    }
+                </select>
+            </>
+        )}
+
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="rol">
+                    Tu rol en el emprendimiento
+                </label>
+                <select 
+                    id="rol" 
+                    name="rol" 
+                    value={formData.rol} 
+                    onChange={handleChange} 
+                    required 
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                    <option value="">Selecciona una opción</option>
+                    <option value="SOCIO CAPITALISTA">SOY O SERÉ SOCIO CAPITALISTA</option>
+                    <option value="SOCIO TRABAJADOR">SOY O SERÉ SOCIO TRABAJADOR</option>
+                    <option value="SOCIO IGUALITARIO (CAPITAL Y TRABAJO)">SOY O SERÉ SOCIO IGUALITARIO (CAPITAL Y TRABAJO)</option>
+                </select>
+            </div>
+
+            <label>Descripción del proyecto que tienes o quieres:</label>
+            <textarea
+                id="descripcionProyecto"
+                name="descripcionProyecto"
+                placeholder="Describe brevemente el proyecto que tienes o quisieras participar (máximo 800 caracteres)"
+                maxLength={800}
+                value={formData.descripcionProyecto}
+                onChange={handleChange}
+                required
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                style={{ resize: "none", height: "100px", width: "80%" }}
+            />
 
             <button type="submit">Enviar</button>
         </form>
     );
 };
 
-export default Formulario;
+export default Formulario;         
