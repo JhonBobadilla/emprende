@@ -1,7 +1,7 @@
 # emprende
 Aplicación para que emprendedores con similitudes formen empresas. 
 
-Instalación de dependencias del front:
+Dependencias del fronted:
 - React
 - React DOM
 - react scripts
