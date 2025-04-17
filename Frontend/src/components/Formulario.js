@@ -116,10 +116,17 @@ const Formulario = () => {
     };
 
     const servicios = {
-        "ASESORIA Y CONSULTA": "Asesoría administrativa",
-        "PRODUCTOS DIGITALES": "Software, plataformas web",
-        "OTROS": "Otros, Otros2"
-    };
+        "ASESORIA Y CONSULTA": "Consultoría empresarial, Asesoría financiera, Asesoría legal, Asesoría o Coaching personal y profesional, Consultoría en marketing, Asesoría de las ingenierías, Cualquier otro servicio de esta categoría",
+        "SALUD Y BIENESTAR": "Servicios médicos, Terapias alternativas (acupuntura, masajes), Psicología y consejería, Nutrición y dietética, Servicios de yoga y meditación, Cualquier otro servicio de esta categoría",
+        "EDUCACIÓN": "Tutorías académicas, Cursos en línea, Capacitación profesional, Enseñanza de idiomas, Asesoramiento educativo, Cualquier otro servicio de esta categoría",
+        "TECNOLOGÍA Y DIGITAL": "Desarrollo de software, Diseño web, Servicios de ciberseguridad, Optimización SEO, Creación de contenido digital, Cualquier otro servicio de esta categoría",
+        "MARKETING Y PUBLICIDAD": "Gestión de redes sociales, Diseño gráfico, Producción audiovisual, Estrategias publicitarias, Análisis de mercado, Cualquier otro servicio de esta categoría",
+        "LOGÍSTICA Y TRANSPORTE": "Transporte de carga, Servicios de mensajería, Almacenamiento y distribución, Mudanzas, Transporte turístico, Cualquier otro servicio de esta categoría",
+        "TURISMO Y HOSPITALIDAD": "Guías turísticas, Servicios hoteleros, Organización de eventos, Restauración y catering, Reservas de viajes, Cualquier otro servicio de esta categoría",
+        "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
+        "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
+        "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
+        };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -306,7 +313,7 @@ const Formulario = () => {
             <textarea
                 id="descripcionProyecto"
                 name="descripcionProyecto"
-                placeholder="Describe brevemente el proyecto que tienes o quisieras participar (máximo 800 caracteres)"
+                placeholder="Describe brevemente el proyecto que tienes o quisieras unirte (máximo 800 caracteres)"
                 maxLength={800}
                 value={formData.descripcionProyecto}
                 onChange={handleChange}

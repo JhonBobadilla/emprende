@@ -11,3 +11,6 @@ Dependencias del fronted:
 - bootstrap
 - Material-UI
 
+Dependencias del backend:
+- Mysql connector python
+- Django
