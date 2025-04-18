@@ -14,7 +14,7 @@ def insertar_datos():
     # Crear y guardar usuarios de ejemplo
     usuarios = [
         Usuario(
-            pais="Colombia",
+            pais="Brasil",
             ciudad="Bogotá",
             nombres="Juan",
             apellidos="Pérez",
@@ -30,7 +30,7 @@ def insertar_datos():
             descripcion="Emprendedor en tecnología y desarrollo de software"
         ),
         Usuario(
-            pais="Colombia",
+            pais="Brasil",
             ciudad="Medellín",
             nombres="Ana",
             apellidos="Gómez",
@@ -46,7 +46,7 @@ def insertar_datos():
             descripcion="Especialista en desarrollo de programas educativos"
         ),
         Usuario(
-            pais="Peru",
+            pais="Brasil",
             ciudad="Lima",
             nombres="Carlos",
             apellidos="Torres",
@@ -62,7 +62,7 @@ def insertar_datos():
             descripcion="Médico general con enfoque en medicina preventiva"
         ),
         Usuario(
-            pais="Mexico",
+            pais="Brasil",
             ciudad="Ciudad de México",
             nombres="Luis",
             apellidos="Martínez",
