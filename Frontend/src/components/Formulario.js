@@ -224,6 +224,7 @@ const Formulario = () => {
         console.log("Datos enviados al backend:", JSON.stringify(formData));
     
         try {
+            console.log("Datos enviados al backendddddddddddddddddddddddddd:", formData);
             const response = await fetch("http://127.0.0.1:8000/api/usuarios/", {
                 method: "POST",
                 headers: {
