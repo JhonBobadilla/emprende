@@ -33,13 +33,14 @@ const Formulario = () => {
         ciudad: "",
         sexo: "",
         edad: "",
-        emprendimiento: "",
+        telefono: "",
+        correo_electronico: "",
+        estado_emprendimiento: "",
+        rol: "",
+        descripcionProyecto: "",
         tipoEmprendimiento: "",
         titulo: "",
-        opcion: "",
-        telefono: "",
-        descripcionProyecto: "", // Nuevo campo para descripción del proyecto
-        rol: "", // Nuevo campo para el rol en el emprendimiento
+        opcion: ""
     });
 
     const [ciudadesDisponibles, setCiudadesDisponibles] = useState([]);
@@ -126,180 +127,267 @@ const Formulario = () => {
         "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
         "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
         "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
-        };
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === "pais") {
-            setCiudadesDisponibles(ciudadesPorPais[value] || []);
-            setFormData({ ...formData, [name]: value, ciudad: "" });
-        } else if (name === "edad") {
-            const nuevoValor = value.replace(/\D/g, "");
-            setFormData({ ...formData, [name]: nuevoValor });
-            setErrorEdad(nuevoValor && parseInt(nuevoValor) < 18 ? "Debes ser mayor de edad, si eres menor no puedes inscribirte." : "");
-        } else if (name === "emprendimiento") {
-            setFormData({ ...formData, [name]: value });
-        } else if (name === "tipoEmprendimiento") {
-            const titulos = value === "PRODUCTOS" ? Object.keys(productos) : value === "SERVICIOS" ? Object.keys(servicios) : [];
-            setTitulosDisponibles(titulos);
-            setOpcionesDisponibles([]);
-            setFormData({ ...formData, [name]: value, titulo: "", opcion: "" });
-        } else if (name === "titulo") {
-            const source = formData.tipoEmprendimiento === "PRODUCTOS" ? productos : servicios;
-            const opciones = source[value] ? source[value].split(",").map(op => op.trim()) : [];
-            setOpcionesDisponibles(opciones);
-            setFormData({ ...formData, [name]: value, opcion: "" });
-        } else {
-            const nuevoValor = (name === "nombres" || name === "apellidos") ? value.toUpperCase() : value;
-            setFormData({ ...formData, [name]: nuevoValor });
-        }
+    
+        console.log(`🛠 Campo cambiado: ${name}, Nuevo valor: ${value}`);
+    
+        setFormData((prevFormData) => {
+            let nuevoEstado = { ...prevFormData, [name]: value.trim() }; // 🔹 Evitamos espacios innecesarios
+    
+            // Actualización especial para ciertos campos
+            if (name === "pais") {
+                nuevoEstado = { ...nuevoEstado, ciudad: "", pais: value };
+                setCiudadesDisponibles(ciudadesPorPais[value] || []);
+            } else if (name === "edad") {
+                const edadValida = value.replace(/\D/g, ""); 
+                nuevoEstado = { ...nuevoEstado, edad: edadValida };
+                setErrorEdad(edadValida && parseInt(edadValida) < 18 ? "Debes ser mayor de edad, si eres menor no puedes inscribirte." : "");
+            } else if (name === "tipoEmprendimiento") {
+                const titulos = value === "PRODUCTOS" ? Object.keys(productos) : value === "SERVICIOS" ? Object.keys(servicios) : [];
+                nuevoEstado = { ...nuevoEstado, tipoEmprendimiento: value, titulo: "", opcion: "" };
+                setTitulosDisponibles(titulos);
+                setOpcionesDisponibles([]);
+            } else if (name === "titulo") {
+                const source = prevFormData.tipoEmprendimiento === "PRODUCTOS" ? productos : servicios;
+                const opciones = source[value] ? source[value].split(",").map(op => op.trim()) : [];
+                nuevoEstado = { ...nuevoEstado, titulo: value, opcion: "" };
+                setOpcionesDisponibles(opciones);
+            } else if (name === "correo_electronico") {
+                nuevoEstado = { ...nuevoEstado, correo_electronico: value.trim() };
+            } else if (name === "descripcionProyecto") {
+                nuevoEstado = { ...nuevoEstado, descripcionProyecto: value.trim() };
+            } else if (name === "estado_emprendimiento") {
+                nuevoEstado = { ...nuevoEstado, estado_emprendimiento: value.trim() };
+            }
+    
+            return nuevoEstado;
+        });
     };
+    
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (parseInt(formData.edad, 10) < 18) {
-            alert("Debes ser mayor de edad, si eres menor no puedes inscribirte.");
+    
+        // Función para obtener el token CSRF
+        const getCookie = (name) => {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        };
+    
+        // Validación de datos
+        console.log("Datos enviados antes de validación:", formData);
+        const edad = parseInt(formData.edad, 10);
+        console.log("Edad convertida a número:", edad);
+    
+        // Validación básica
+        if (
+            !formData.nombres.trim() ||
+            !formData.apellidos.trim() ||
+            !formData.pais.trim() || 
+            !formData.ciudad.trim() || 
+            !formData.sexo.trim() || 
+            !formData.edad.trim() ||
+            isNaN(edad) ||
+            edad < 18 ||
+            !formData.correo_electronico.trim() || 
+            !formData.estado_emprendimiento.trim() || 
+            !formData.rol.trim() ||
+            !formData.descripcionProyecto.trim()
+        ) {
+            alert("Todos los campos son obligatorios y debes ser mayor de 18 años.");
             return;
         }
-        console.log("Datos del formulario:", formData);
+        
+        // Validación para emprendimientos iniciados
+        if (formData.estado_emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
+            !formData.tipoEmprendimiento.trim() ||
+            !formData.titulo.trim() ||
+            !formData.opcion.trim()
+        )) {
+            alert("Para emprendimientos ya iniciados, debes completar toda la información sobre tu negocio.");
+            return;
+        }
+    
+        console.log("Datos enviados al backend:", JSON.stringify(formData));
+    
+        try {
+            const response = await fetch("http://127.0.0.1:8000/api/usuarios/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+                credentials: "include",
+                body: JSON.stringify(formData)
+            });
+    
+            // Manejo mejorado de la respuesta
+            const responseData = await response.text();
+            
+            try {
+                const jsonData = JSON.parse(responseData);
+                if (!response.ok) {
+                    throw new Error(jsonData.message || "Error en el servidor");
+                }
+                alert("Formulario enviado con éxito: " + JSON.stringify(jsonData));
+            } catch (e) {
+                console.error("El servidor devolvió:", responseData);
+                throw new Error("La respuesta no es JSON válido: " + responseData.substring(0, 100));
+            }
+        } catch (error) {
+            console.error("Error completo:", error);
+            alert("Error: " + error.message);
+        }
     };
-
+    
     return (
         <form onSubmit={handleSubmit}>
-        <label>País:</label>
-        <select name="pais" value={formData.pais} onChange={handleChange} required>
-            <option value="">Selecciona un país</option>
-            {Object.keys(ciudadesPorPais).map((pais) => (
-                <option key={pais} value={pais}>{pais}</option>
-            ))}
-        </select>
+            <label>País:</label>
+            <select name="pais" value={formData.pais} onChange={handleChange} required>
+                <option value="">Selecciona un país</option>
+                {Object.keys(ciudadesPorPais).map((pais) => (
+                    <option key={pais} value={pais}>{pais}</option>
+                ))}
+            </select>
 
-        <label>Ciudad:</label>
-        <select name="ciudad" value={formData.ciudad} onChange={handleChange} required>
-            <option value="">Selecciona una ciudad</option>
-            {ciudadesDisponibles.map((ciudad, idx) => (
-                <option key={idx} value={ciudad}>{ciudad}</option>
-            ))}
-        </select>
+            <label>Ciudad:</label>
+            <select name="ciudad" value={formData.ciudad} onChange={handleChange} required>
+                <option value="">Selecciona una ciudad</option>
+                {ciudadesDisponibles.map((ciudad, idx) => (
+                    <option key={idx} value={ciudad}>{ciudad}</option>
+                ))}
+            </select>
 
-        <label>Nombres:</label>
-        <input type="text" name="nombres" value={formData.nombres} onChange={handleChange} required />
+            <label>Nombres:</label>
+            <input type="text" name="nombres" value={formData.nombres} onChange={handleChange} required />
 
-        <label>Apellidos:</label>
-        <input type="text" name="apellidos" value={formData.apellidos} onChange={handleChange} required />
+            <label>Apellidos:</label>
+            <input type="text" name="apellidos" value={formData.apellidos} onChange={handleChange} required />
 
-        <label>Sexo:</label>
-        <select name="sexo" value={formData.sexo} onChange={handleChange} required>
-            <option value="">Selecciona una opción</option>
-            <option value="FEMENINO">FEMENINO</option>
-            <option value="MASCULINO">MASCULINO</option>
-            <option value="OTRO">OTRO</option>
-        </select>
+            <label>Sexo:</label>
+            <select name="sexo" value={formData.sexo} onChange={handleChange} required>
+                <option value="">Selecciona una opción</option>
+                <option value="FEMENINO">FEMENINO</option>
+                <option value="MASCULINO">MASCULINO</option>
+                <option value="OTRO">OTRO</option>
+            </select>
 
-        <label>Edad:</label>
-        <input type="text" name="edad" value={formData.edad} onChange={handleChange} required />
-        {errorEdad && <p style={{ color: "red" }}>{errorEdad}</p>}
+            <label>Edad:</label>
+            <input type="text" name="edad" value={formData.edad} onChange={handleChange} required />
+            {errorEdad && <p style={{ color: "red" }}>{errorEdad}</p>}
 
-        {/* Casilla de Teléfono con Indicativo y Bandera dentro del Input */}
-        <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="telefono">
-                Teléfono
-            </label>
-            <div style={{ display: "flex", alignItems: "center", border: "1px solid black", borderRadius: "3px", width: "40%" }}>
-                <span style={{ marginRight: "8px", display: "flex", alignItems: "center" }}>
-                    {formData.pais && `+${indicativoPais(formData.pais)}`}
-                    {codigosBandera[formData.pais] && (
-                        <img
-                            src={`https://flagcdn.com/w40/${codigosBandera[formData.pais]}.png`}
-                            alt={`${formData.pais} flag`}
-                            style={{ width: "20px", marginLeft: "5px" }}
-                        />
-                    )}
-                </span>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="telefono">
+                    Teléfono
+                </label>
+                <div style={{ display: "flex", alignItems: "center", border: "1px solid black", borderRadius: "3px", width: "40%" }}>
+                    <span style={{ marginRight: "8px", display: "flex", alignItems: "center" }}>
+                        {formData.pais && `+${indicativoPais(formData.pais)}`}
+                        {codigosBandera[formData.pais] && (
+                            <img
+                                src={`https://flagcdn.com/w40/${codigosBandera[formData.pais]}.png`}
+                                alt={`${formData.pais} flag`}
+                                style={{ width: "20px", height: "15px", marginLeft: "5px" }}
+                            />
+                        )}
+                    </span>
+                    <input
+                        type="text"
+                        name="telefono"
+                        value={formData.telefono}
+                        onChange={handleChange}
+                        required
+                        placeholder="Número de teléfono"
+                        style={{ border: "none", outline: "none", flex: "1", paddingLeft: "10px" }}
+                    />
+                </div>
+            </div>
+
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="correo_electronico">
+                    Correo electrónico
+                </label>
                 <input
-                    type="text"
-                    id="telefono"
-                    name="telefono"
-                    placeholder="Número de teléfono"
-                    value={formData.telefono}
+                    type="email"
+                    id="correo_electronico"
+                    name="correo_electronico"
+                    value={formData.correo_electronico}
                     onChange={handleChange}
+                    placeholder="ejemplo@correo.com"
                     required
-                    style={{ border: "none", outline: "none", flex: "1", padding: "5px" }}
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
             </div>
-        </div>
+            
+            <label>Estado del emprendimiento:</label>
+            <select name="estado_emprendimiento" value={formData.estado_emprendimiento} onChange={handleChange} required>
+                <option value="">Selecciona una opción</option>
+                <option value="AÚN NO INICIO MI EMPRENDIMIENTO">AÚN NO INICIO MI EMPRENDIMIENTO</option>
+                <option value="YA INICIÉ MI EMPRENDIMIENTO PERO AÚN NO GENERO UTILIDADES">YA INICIÉ PERO AÚN NO GENERO UTILIDADES</option>
+                <option value="YA INICIÉ MI EMPRENDIMIENTO Y YA GENERO UTILIDADES">YA INICIÉ Y YA GENERO UTILIDADES</option>
+            </select>
 
-        <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                Correo electrónico
-            </label>
-            <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="ejemplo@correo.com"
-                required
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-        </div>
+            {/* Mostrar casillas condicionalmente */}
+            {formData.estado_emprendimiento && formData.estado_emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
+                <>
+                    <label>Mi emprendimiento se centra en:</label>
+                    <select name="tipoEmprendimiento" value={formData.tipoEmprendimiento} onChange={handleChange} required>
+                        <option value="">Selecciona una opción</option>
+                        <option value="PRODUCTOS">PRODUCTOS</option>
+                        <option value="SERVICIOS">SERVICIOS</option>
+                    </select>
 
-        <label>Estado del emprendimiento:</label>
-        <select name="emprendimiento" value={formData.emprendimiento} onChange={handleChange} required>
-            <option value="">Selecciona una opción</option>
-            <option value="AÚN NO INICIO MI EMPRENDIMIENTO">AÚN NO INICIO MI EMPRENDIMIENTO</option>
-            <option value="YA INICIÉ MI EMPRENDIMIENTO PERO AÚN NO GENERO UTILIDADES">YA INICIÉ PERO AÚN NO GENERO UTILIDADES</option>
-            <option value="YA INICIÉ MI EMPRENDIMIENTO Y YA GENERO UTILIDADES">YA INICIÉ Y YA GENERO UTILIDADES</option>
-        </select>
+                    <label>Categoría:</label>
+                    <select name="titulo" value={formData.titulo} onChange={handleChange} required>
+                        {formData.tipoEmprendimiento === ""
+                            ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
+                            : <>
+                                <option value="">Selecciona un título</option>
+                                {titulosDisponibles.map((titulo, idx) => (
+                                    <option key={idx} value={titulo}>{titulo}</option>
+                                ))}
+                            </>
+                        }
+                    </select>
 
-        {/* Mostrar casillas condicionalmente */}
-        {formData.emprendimiento && formData.emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
-            <>
-                <label>Mi emprendimiento se centra en:</label>
-                <select name="tipoEmprendimiento" value={formData.tipoEmprendimiento} onChange={handleChange} required>
-                    <option value="">Selecciona una opción</option>
-                    <option value="PRODUCTOS">PRODUCTOS</option>
-                    <option value="SERVICIOS">SERVICIOS</option>
-                </select>
+                    <label>Opción específica:</label>
+                    <select name="opcion" value={formData.opcion} onChange={handleChange} required>
+                        {formData.titulo === ""
+                            ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
+                            : <>
+                                <option value="">Selecciona una opción</option>
+                                {opcionesDisponibles.map((opcion, idx) => (
+                                    <option key={idx} value={opcion}>{opcion}</option>
+                                ))}
+                            </>
+                        }
+                    </select>
+                </>
+            )}
 
-                <label>Categoría:</label>
-                <select name="titulo" value={formData.titulo} onChange={handleChange} required>
-                    {formData.tipoEmprendimiento === ""
-                        ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
-                        : <>
-                            <option value="">Selecciona un título</option>
-                            {titulosDisponibles.map((titulo, idx) => (
-                                <option key={idx} value={titulo}>{titulo}</option>
-                            ))}
-                        </>
-                    }
-                </select>
-
-                <label>Opción específica:</label>
-                <select name="opcion" value={formData.opcion} onChange={handleChange} required>
-                    {formData.titulo === ""
-                        ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
-                        : <>
-                            <option value="">Selecciona una opción</option>
-                            {opcionesDisponibles.map((opcion, idx) => (
-                                <option key={idx} value={opcion}>{opcion}</option>
-                            ))}
-                        </>
-                    }
-                </select>
-            </>
-        )}
-
-              <div className="mb-4">
+            <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="rol">
                     Tu rol en el emprendimiento
                 </label>
-                <select 
-                    id="rol" 
-                    name="rol" 
-                    value={formData.rol} 
-                    onChange={handleChange} 
-                    required 
+                <select
+                    id="rol"
+                    name="rol"
+                    value={formData.rol}
+                    onChange={handleChange}
+                    required
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 >
                     <option value="">Selecciona una opción</option>
@@ -327,4 +415,4 @@ const Formulario = () => {
     );
 };
 
-export default Formulario;         
+export default Formulario;

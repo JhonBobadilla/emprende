@@ -1,22 +1,11 @@
-"""
-URL configuration for core project.
+""" Este archivo tiene como función principal definir las rutas o "endpoints" que conectan URLs específicas con las vistas correspondientes en la aplicación. Antes, este archivo únicamente configuraba la ruta para el panel de administración de Django, permitiendo acceder al área de administración con la URL admin/. Ahora, se ha ampliado su funcionalidad al incluir una nueva ruta guardar_usuario/, que conecta directamente con la vista guardar_usuario. Esto permite que el backend reciba datos enviados desde el frontend mediante solicitudes POST y los procese para guardarlos en la base de datos, creando así un endpoint funcional para la API. En resumen, este archivo ahora facilita tanto la administración como la interacción dinámica entre el frontend y el backend
+ """
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
+from core.views import guardar_usuario
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/usuarios/', guardar_usuario, name='guardar_usuario'),
 ]
