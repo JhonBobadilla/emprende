@@ -96,7 +96,38 @@ const Formulario = () => {
         ]
     };
 
+    const productos = {
+        "ALIMENTOS Y BEBIDAS": "Aceites, vinagres y condimentos, Alimentos deshidratados y enlatados, Alimentos frescos (frutas/verduras), Alimentos vegetarianos veganos gourmet y orgánicos, Alimentos precocinados y/o congelados, Bebidas alcohólicas, Bebidas energéticas, Bebidas isotónicas, Café té y mate, Cereales y granos, Chocolates dulces y postres, Restaurante (cualquier tipo), Harinas y mezclas, Helados y postres, Miel y derivados, Panadería y repostería, Pastas y arroces, Productos lácteos, Snacks y botanas",
+        "MODA Y ACCESORIOS": "Accesorios para cabello, Bisutería, Bolsos y carteras, Calzado, Cinturones, Gafas de sol, Gorros y sombreros, Joyería Lencería, Moda infantil, Moda masculina, Moda femenina, Relojes, Ropa de baño, Ropa deportiva, Ropa interior, Ropa para bebés, Ropa de trabajo, Almacén o fábrica de ropa (cualquier tipo)",
+        "HOGAR Y JARDÍN": "Aire acondicionado, Alfombras y tapetes, Artículos de baño, Calefacción, Cortinas y persianas, Decoración navideña, Electrodomésticos, Iluminación, Jardinería, Productos de limpieza del hogar, Muebles de exterior, Organizadores, Paisajismo, Plantas artificiales, Productos de lavandería, Sistemas de riego, Textiles para hogar, Utensilios de cocina, Cualquier tipo de producto de esta categoría.",
+        "TECNOLOGÍA Y ELECTRÓNICA": "Accesorios de audio, Cámaras de seguridad, Drones, Electrónica para automóviles, Equipos de redes, GPS y navegación, Impresoras 3D, Realidad virtual, Smartwatches, Tarjetas de memoria, Cualquier tipo de producto de esta categoría",
+        "DEPORTES Y AIRE LIBRE": "Artículos deportivos",
+        "AUTOMOTRIZ Y TRANSPORTE": "Accesorios para vehículos",
+        "INDUSTRIA Y CONSTRUCCIÓN": "Publicidad, Estampados, Materiales Cualquier tipo de producto de esta categoría",
+        "SALUD Y BELLEZA": "Artículos de salud y belleza, Cualquier tipo de producto de esta categoría",
+        "INFANTIL": "Artículos infantiles, Cualquier tipo de producto de esta categoría",
+        "MASCOTAS": "Aseo para mascotas, Artículos para mascotas, Alimento para mascotas, Ropa para mascotas, Cualquier tipo de producto de esta categoría",
+        "OFICINA": "Artículos de oficina",
+        "ARTE": "Artículos para arte",
+        "SEGURIDAD": "Artículos de seguridad",
+        "EVENTOS Y CELEBRACIONES": "Artículos para eventos y celebraciones",
+        "PRODUCTOS ESPECIALIZADOS": "Artículos religiosos, Cualquier tipo de producto de esta categoría",
+        "PRODUCTOS PARA ADULTOS": "Cualquier tipo de producto de esta categoría",
+        "OTROS ARTÍCULOS": "Otros artículos"
+    };
     
+    const servicios = {
+        "ASESORIA Y CONSULTA": "Consultoría empresarial, Asesoría financiera, Asesoría legal, Asesoría o Coaching personal y profesional, Consultoría en marketing, Asesoría de las ingenierías, Cualquier otro servicio de esta categoría",
+        "SALUD Y BIENESTAR": "Servicios médicos, Terapias alternativas (acupuntura, masajes), Psicología y consejería, Nutrición y dietética, Servicios de yoga y meditación, Cualquier otro servicio de esta categoría",
+        "EDUCACIÓN": "Tutorías académicas, Cursos en línea, Capacitación profesional, Enseñanza de idiomas, Asesoramiento educativo, Cualquier otro servicio de esta categoría",
+        "TECNOLOGÍA Y DIGITAL": "Desarrollo de software, Diseño web, Servicios de ciberseguridad, Optimización SEO, Creación de contenido digital, Cualquier otro servicio de esta categoría",
+        "MARKETING Y PUBLICIDAD": "Gestión de redes sociales, Diseño gráfico, Producción audiovisual, Estrategias publicitarias, Análisis de mercado, Cualquier otro servicio de esta categoría",
+        "LOGÍSTICA Y TRANSPORTE": "Transporte de carga, Servicios de mensajería, Almacenamiento y distribución, Mudanzas, Transporte turístico, Cualquier otro servicio de esta categoría",
+        "TURISMO Y HOSPITALIDAD": "Guías turísticas, Servicios hoteleros, Organización de eventos, Restauración y catering, Reservas de viajes, Cualquier otro servicio de esta categoría",
+        "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
+        "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
+        "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -437,35 +468,4 @@ export default Formulario;
 
 
 
-const productos = {
-    "ALIMENTOS Y BEBIDAS": "Aceites, vinagres y condimentos, Alimentos deshidratados y enlatados, Alimentos frescos (frutas/verduras), Alimentos vegetarianos veganos gourmet y orgánicos, Alimentos precocinados y/o congelados, Bebidas alcohólicas, Bebidas energéticas, Bebidas isotónicas, Café té y mate, Cereales y granos, Chocolates dulces y postres, Restaurante (cualquier tipo), Harinas y mezclas, Helados y postres, Miel y derivados, Panadería y repostería, Pastas y arroces, Productos lácteos, Snacks y botanas",
-    "MODA Y ACCESORIOS": "Accesorios para cabello, Bisutería, Bolsos y carteras, Calzado, Cinturones, Gafas de sol, Gorros y sombreros, Joyería Lencería, Moda infantil, Moda masculina, Moda femenina, Relojes, Ropa de baño, Ropa deportiva, Ropa interior, Ropa para bebés, Ropa de trabajo, Almacén o fábrica de ropa (cualquier tipo)",
-    "HOGAR Y JARDÍN": "Aire acondicionado, Alfombras y tapetes, Artículos de baño, Calefacción, Cortinas y persianas, Decoración navideña, Electrodomésticos, Iluminación, Jardinería, Productos de limpieza del hogar, Muebles de exterior, Organizadores, Paisajismo, Plantas artificiales, Productos de lavandería, Sistemas de riego, Textiles para hogar, Utensilios de cocina, Cualquier tipo de producto de esta categoría.",
-    "TECNOLOGÍA Y ELECTRÓNICA": "Accesorios de audio, Cámaras de seguridad, Drones, Electrónica para automóviles, Equipos de redes, GPS y navegación, Impresoras 3D, Realidad virtual, Smartwatches, Tarjetas de memoria, Cualquier tipo de producto de esta categoría",
-    "DEPORTES Y AIRE LIBRE": "Artículos deportivos",
-    "AUTOMOTRIZ Y TRANSPORTE": "Accesorios para vehículos",
-    "INDUSTRIA Y CONSTRUCCIÓN": "Publicidad, Estampados, Materiales Cualquier tipo de producto de esta categoría",
-    "SALUD Y BELLEZA": "Artículos de salud y belleza, Cualquier tipo de producto de esta categoría",
-    "INFANTIL": "Artículos infantiles, Cualquier tipo de producto de esta categoría",
-    "MASCOTAS": "Aseo para mascotas, Artículos para mascotas, Alimento para mascotas, Ropa para mascotas, Cualquier tipo de producto de esta categoría",
-    "OFICINA": "Artículos de oficina",
-    "ARTE": "Artículos para arte",
-    "SEGURIDAD": "Artículos de seguridad",
-    "EVENTOS Y CELEBRACIONES": "Artículos para eventos y celebraciones",
-    "PRODUCTOS ESPECIALIZADOS": "Artículos religiosos, Cualquier tipo de producto de esta categoría",
-    "PRODUCTOS PARA ADULTOS": "Cualquier tipo de producto de esta categoría",
-    "OTROS ARTÍCULOS": "Otros artículos"
-};
 
-const servicios = {
-    "ASESORIA Y CONSULTA": "Consultoría empresarial, Asesoría financiera, Asesoría legal, Asesoría o Coaching personal y profesional, Consultoría en marketing, Asesoría de las ingenierías, Cualquier otro servicio de esta categoría",
-    "SALUD Y BIENESTAR": "Servicios médicos, Terapias alternativas (acupuntura, masajes), Psicología y consejería, Nutrición y dietética, Servicios de yoga y meditación, Cualquier otro servicio de esta categoría",
-    "EDUCACIÓN": "Tutorías académicas, Cursos en línea, Capacitación profesional, Enseñanza de idiomas, Asesoramiento educativo, Cualquier otro servicio de esta categoría",
-    "TECNOLOGÍA Y DIGITAL": "Desarrollo de software, Diseño web, Servicios de ciberseguridad, Optimización SEO, Creación de contenido digital, Cualquier otro servicio de esta categoría",
-    "MARKETING Y PUBLICIDAD": "Gestión de redes sociales, Diseño gráfico, Producción audiovisual, Estrategias publicitarias, Análisis de mercado, Cualquier otro servicio de esta categoría",
-    "LOGÍSTICA Y TRANSPORTE": "Transporte de carga, Servicios de mensajería, Almacenamiento y distribución, Mudanzas, Transporte turístico, Cualquier otro servicio de esta categoría",
-    "TURISMO Y HOSPITALIDAD": "Guías turísticas, Servicios hoteleros, Organización de eventos, Restauración y catering, Reservas de viajes, Cualquier otro servicio de esta categoría",
-    "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
-    "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
-    "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
-};
