@@ -1,4 +1,4 @@
-#ste archivo
+#Este archivo
 
 #Define que esta vista aceptará únicamente solicitudes POST, que son usadas para enviar datos.
 #- UsuarioSerializer(data=request.data): Toma los datos enviados desde el frontend y los valida usando el serializer.
@@ -20,6 +20,7 @@ def guardar_usuario(request):
     # Manejo de JSON malformado
     try:
         request_data = json.loads(request.body)
+        print("Datos recibidos:", request_data)  # Verifica lo que llega al backend
     except json.JSONDecodeError:
         return Response(
             {
@@ -32,7 +33,6 @@ def guardar_usuario(request):
 
     # Validación con serializer
     serializer = UsuarioSerializer(data=request_data)
-    
     if not serializer.is_valid():
         return Response(
             {
@@ -56,6 +56,7 @@ def guardar_usuario(request):
             status=status.HTTP_201_CREATED
         )
     except Exception as e:
+        print("Error al guardar el usuario:", str(e))  
         return Response(
             {
                 "status": "error",

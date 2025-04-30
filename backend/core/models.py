@@ -37,6 +37,12 @@ class Usuario(models.Model):
         help_text="País de residencia"
     )
     
+    ultima_actualizacion = models.DateTimeField(
+    auto_now=True,  # Actualiza automáticamente cada vez que se guarda el registro
+    null=True,      # Permite valores nulos si no es obligatorio
+    blank=True      # Permite dejar el campo vacío
+    
+    )
     ciudad = models.CharField(
         max_length=50,
         help_text="Ciudad de residencia"
@@ -56,7 +62,7 @@ class Usuario(models.Model):
         max_length=20,
         validators=[
             RegexValidator(
-                regex=r'^\+?[\d\s]{9,15}$',
+                regex=r'^\+?[\d\s]{8,15}$',
                 message="Formato de teléfono inválido. Use números y un + opcional"
             )
         ]
@@ -85,7 +91,7 @@ class Usuario(models.Model):
     )
     
     # Campos condicionales
-    tipoEmprendimiento = models.CharField(
+    tipoemprendimiento = models.CharField(
         max_length=20,
         blank=True,
         null=True,
@@ -112,11 +118,12 @@ class Usuario(models.Model):
     )
 
     class Meta:
+        db_table = 'usuarios'
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
         ordering = ['-fecha_registro']
         indexes = [
-            models.Index(fields=['correo_electronico'], name='email_index'),
+        models.Index(fields=['correo_electronico'], name='email_index'),
         ]
 
     def __str__(self):
@@ -128,9 +135,9 @@ class Usuario(models.Model):
         
         # Validación para emprendimientos iniciados
         if self.estado_emprendimiento != 'AÚN NO INICIO MI EMPRENDIMIENTO':
-            if not self.tipoEmprendimiento:
+            if not self.tipoemprendimiento:
                 raise ValidationError(
-                    {'tipoEmprendimiento': 'Debe especificar el tipo de emprendimiento'}
+                    {'tipoemprendimiento': 'Debe especificar el tipo de emprendimiento'}
                 )
             if not self.titulo:
                 raise ValidationError(

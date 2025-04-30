@@ -1,5 +1,3 @@
-# Este archivo se encargará de convertir los datos del modelo Usuario en un formato que pueda enviarse y recibirse como JSON desde el frontend.
-
 from rest_framework import serializers
 from .models import Usuario
 import re
@@ -9,34 +7,14 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
         extra_kwargs = {
-            'se_centra_en': {
-                'required': False,
-                'allow_blank': True,
-                'allow_null': True
-            },
-            'categoria': {
-                'required': False,
-                'allow_blank': True,
-                'allow_null': True
-            },
-            'opcion_especifica': {
-                'required': False,
-                'allow_blank': True,
-                'allow_null': True
-            },
-            'descripcion': {
+            'descripcionProyecto': {
                 'required': True,
                 'allow_blank': False,
                 'error_messages': {
                     'blank': 'La descripción del proyecto es obligatoria'
                 }
             },
-            'estado_emprendimiento': {
-                'max_length': 50,
-                'error_messages': {
-                    'max_length': 'El estado no puede exceder los 50 caracteres'
-                }
-            },
+            
             'correo_electronico': {
                 'required': True,
                 'allow_blank': False,
@@ -48,6 +26,21 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'telefono': {
                 'required': True,
                 'allow_blank': False
+            },
+            'tipoemprendimiento': {
+                'required': False,
+                'allow_blank': True,
+                'allow_null': True
+            },
+            'titulo': {
+                'required': False,
+                'allow_blank': True,
+                'allow_null': True
+            },
+            'opcion': {
+                'required': False,
+                'allow_blank': True,
+                'allow_null': True
             }
         }
 
@@ -77,28 +70,28 @@ class UsuarioSerializer(serializers.ModelSerializer):
         
         # Validación para emprendimientos iniciados
         if estado and estado != 'AÚN NO INICIO MI EMPRENDIMIENTO':
-            if not data.get('se_centra_en'):
+            if not data.get('tipoemprendimiento'):
                 raise serializers.ValidationError({
-                    "se_centra_en": "Debe especificar si su emprendimiento se centra en productos o servicios"
+                    "tipoemprendimiento": "Debe especificar si su emprendimiento se centra en productos o servicios"
                 })
-            if not data.get('categoria'):
+            if not data.get('titulo'):
                 raise serializers.ValidationError({
-                    "categoria": "Debe seleccionar una categoría para su emprendimiento"
+                    "titulo": "Debe seleccionar un título para su emprendimiento"
                 })
-            if not data.get('opcion_especifica'):
+            if not data.get('opcion'):
                 raise serializers.ValidationError({
-                    "opcion_especifica": "Debe especificar la opción concreta de su emprendimiento"
+                    "opcion": "Debe especificar la opción concreta de su emprendimiento"
                 })
 
         # Validación de descripción
-        descripcion = data.get('descripcion', '').strip()
-        if len(descripcion) < 30:
+        descripcionProyecto = data.get('descripcionProyecto', '').strip()
+        if len(descripcionProyecto) < 10:
             raise serializers.ValidationError({
-                "descripcion": "La descripción debe tener al menos 30 caracteres"
+                "descripcionProyecto": "La descripción debe tener al menos 10 caracteres"
             })
-        if len(descripcion) > 800:
+        if len(descripcionProyecto) > 800:
             raise serializers.ValidationError({
-                "descripcion": "La descripción no puede exceder los 800 caracteres"
+                "descripcionProyecto": "La descripción no puede exceder los 800 caracteres"
             })
 
         return data

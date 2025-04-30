@@ -37,8 +37,8 @@ const Formulario = () => {
         correo_electronico: "",
         estado_emprendimiento: "",
         rol: "",
-        descripcionProyecto: "",
-        tipoEmprendimiento: "",
+        descripcion: "",
+        tipoemprendimiento: "",
         titulo: "",
         opcion: ""
     });
@@ -96,38 +96,7 @@ const Formulario = () => {
         ]
     };
 
-    const productos = {
-        "ALIMENTOS Y BEBIDAS": "Aceites, vinagres y condimentos, Alimentos deshidratados y enlatados, Alimentos frescos (frutas/verduras), Alimentos vegetarianos veganos gourmet y orgánicos, Alimentos precocinados y/o congelados, Bebidas alcohólicas, Bebidas energéticas, Bebidas isotónicas, Café té y mate, Cereales y granos, Chocolates dulces y postres, Restaurante (cualquier tipo), Harinas y mezclas, Helados y postres, Miel y derivados, Panadería y repostería, Pastas y arroces, Productos lácteos, Snacks y botanas",
-        "MODA Y ACCESORIOS": "Accesorios para cabello, Bisutería, Bolsos y carteras, Calzado, Cinturones, Gafas de sol, Gorros y sombreros, Joyería Lencería, Moda infantil, Moda masculina, Moda femenina, Relojes, Ropa de baño, Ropa deportiva, Ropa interior, Ropa para bebés, Ropa de trabajo, Almacén o fábrica de ropa (cualquier tipo)",
-        "HOGAR Y JARDÍN": "Aire acondicionado, Alfombras y tapetes, Artículos de baño, Calefacción, Cortinas y persianas, Decoración navideña, Electrodomésticos, Iluminación, Jardinería, Productos de limpieza del hogar, Muebles de exterior, Organizadores, Paisajismo, Plantas artificiales, Productos de lavandería, Sistemas de riego, Textiles para hogar, Utensilios de cocina, Cualquier tipo de producto de esta categoría.",
-        "TECNOLOGÍA Y ELECTRÓNICA": "Accesorios de audio, Cámaras de seguridad, Drones, Electrónica para automóviles, Equipos de redes, GPS y navegación, Impresoras 3D, Realidad virtual, Smartwatches, Tarjetas de memoria, Cualquier tipo de producto de esta categoría",
-        "DEPORTES Y AIRE LIBRE": "Artículos deportivos",
-        "AUTOMOTRIZ Y TRANSPORTE": "Accesorios para vehículos",
-        "INDUSTRIA Y CONSTRUCCIÓN": "Publicidad, Estampados, Materiales Cualquier tipo de producto de esta categoría",
-        "SALUD Y BELLEZA": "Artículos de salud y belleza, Cualquier tipo de producto de esta categoría",
-        "INFANTIL": "Artículos infantiles, Cualquier tipo de producto de esta categoría",
-        "MASCOTAS": "Aseo para mascotas, Artículos para mascotas, Alimento para mascotas, Ropa para mascotas, Cualquier tipo de producto de esta categoría",
-        "OFICINA": "Artículos de oficina",
-        "ARTE": "Artículos para arte",
-        "SEGURIDAD": "Artículos de seguridad",
-        "EVENTOS Y CELEBRACIONES": "Artículos para eventos y celebraciones",
-        "PRODUCTOS ESPECIALIZADOS": "Artículos religiosos, Cualquier tipo de producto de esta categoría",
-        "PRODUCTOS PARA ADULTOS": "Cualquier tipo de producto de esta categoría",
-        "OTROS ARTÍCULOS": "Otros artículos"
-    };
-
-    const servicios = {
-        "ASESORIA Y CONSULTA": "Consultoría empresarial, Asesoría financiera, Asesoría legal, Asesoría o Coaching personal y profesional, Consultoría en marketing, Asesoría de las ingenierías, Cualquier otro servicio de esta categoría",
-        "SALUD Y BIENESTAR": "Servicios médicos, Terapias alternativas (acupuntura, masajes), Psicología y consejería, Nutrición y dietética, Servicios de yoga y meditación, Cualquier otro servicio de esta categoría",
-        "EDUCACIÓN": "Tutorías académicas, Cursos en línea, Capacitación profesional, Enseñanza de idiomas, Asesoramiento educativo, Cualquier otro servicio de esta categoría",
-        "TECNOLOGÍA Y DIGITAL": "Desarrollo de software, Diseño web, Servicios de ciberseguridad, Optimización SEO, Creación de contenido digital, Cualquier otro servicio de esta categoría",
-        "MARKETING Y PUBLICIDAD": "Gestión de redes sociales, Diseño gráfico, Producción audiovisual, Estrategias publicitarias, Análisis de mercado, Cualquier otro servicio de esta categoría",
-        "LOGÍSTICA Y TRANSPORTE": "Transporte de carga, Servicios de mensajería, Almacenamiento y distribución, Mudanzas, Transporte turístico, Cualquier otro servicio de esta categoría",
-        "TURISMO Y HOSPITALIDAD": "Guías turísticas, Servicios hoteleros, Organización de eventos, Restauración y catering, Reservas de viajes, Cualquier otro servicio de esta categoría",
-        "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
-        "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
-        "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
-    };
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -135,43 +104,64 @@ const Formulario = () => {
         console.log(`🛠 Campo cambiado: ${name}, Nuevo valor: ${value}`);
     
         setFormData((prevFormData) => {
-            let nuevoEstado = { ...prevFormData, [name]: value.trim() }; // 🔹 Evitamos espacios innecesarios
+            let nuevoEstado = { ...prevFormData, [name]: value.trim() };
     
-            // Actualización especial para ciertos campos
+            // 🔁 Actualización especial por campo
             if (name === "pais") {
                 nuevoEstado = { ...nuevoEstado, ciudad: "", pais: value };
                 setCiudadesDisponibles(ciudadesPorPais[value] || []);
             } else if (name === "edad") {
-                const edadValida = value.replace(/\D/g, ""); 
+                const edadValida = value.replace(/\D/g, "");
                 nuevoEstado = { ...nuevoEstado, edad: edadValida };
-                setErrorEdad(edadValida && parseInt(edadValida) < 18 ? "Debes ser mayor de edad, si eres menor no puedes inscribirte." : "");
-            } else if (name === "tipoEmprendimiento") {
-                const titulos = value === "PRODUCTOS" ? Object.keys(productos) : value === "SERVICIOS" ? Object.keys(servicios) : [];
-                nuevoEstado = { ...nuevoEstado, tipoEmprendimiento: value, titulo: "", opcion: "" };
+                setErrorEdad(
+                    edadValida && parseInt(edadValida) < 18
+                        ? "Debes ser mayor de edad, si eres menor no puedes inscribirte."
+                        : ""
+                );
+            } else if (name === "tipoemprendimiento") {
+                const titulos =
+                    value === "PRODUCTOS"
+                        ? Object.keys(productos)
+                        : value === "SERVICIOS"
+                        ? Object.keys(servicios)
+                        : [];
+                nuevoEstado = { ...nuevoEstado, tipoemprendimiento: value, titulo: "", opcion: "" };
                 setTitulosDisponibles(titulos);
                 setOpcionesDisponibles([]);
             } else if (name === "titulo") {
-                const source = prevFormData.tipoEmprendimiento === "PRODUCTOS" ? productos : servicios;
+                const source = prevFormData.tipoemprendimiento === "PRODUCTOS" ? productos : servicios;
                 const opciones = source[value] ? source[value].split(",").map(op => op.trim()) : [];
                 nuevoEstado = { ...nuevoEstado, titulo: value, opcion: "" };
                 setOpcionesDisponibles(opciones);
             } else if (name === "correo_electronico") {
                 nuevoEstado = { ...nuevoEstado, correo_electronico: value.trim() };
-            } else if (name === "descripcionProyecto") {
+            } else if (name === "descripcion") {
                 nuevoEstado = { ...nuevoEstado, descripcionProyecto: value.trim() };
             } else if (name === "estado_emprendimiento") {
-                nuevoEstado = { ...nuevoEstado, estado_emprendimiento: value.trim() };
+                if (value === "AÚN NO INICIO MI EMPRENDIMIENTO") {
+                    nuevoEstado = {
+                        ...nuevoEstado,
+                        estado_emprendimiento: value.trim(),
+                        tipoemprendimiento: "",
+                        titulo: "",
+                        opcion: ""
+                    };
+                    setTitulosDisponibles([]);
+                    setOpcionesDisponibles([]);
+                } else {
+                    nuevoEstado = { ...nuevoEstado, estado_emprendimiento: value.trim() };
+                }
             }
     
             return nuevoEstado;
         });
     };
     
-
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        // Función para obtener el token CSRF
         const getCookie = (name) => {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -187,12 +177,8 @@ const Formulario = () => {
             return cookieValue;
         };
     
-        // Validación de datos
-        console.log("Datos enviados antes de validación:", formData);
         const edad = parseInt(formData.edad, 10);
-        console.log("Edad convertida a número:", edad);
     
-        // Validación básica
         if (
             !formData.nombres.trim() ||
             !formData.apellidos.trim() ||
@@ -210,21 +196,24 @@ const Formulario = () => {
             alert("Todos los campos son obligatorios y debes ser mayor de 18 años.");
             return;
         }
-        
-        // Validación para emprendimientos iniciados
+    
         if (formData.estado_emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
-            !formData.tipoEmprendimiento.trim() ||
+            !formData.tipoemprendimiento.trim() ||
             !formData.titulo.trim() ||
             !formData.opcion.trim()
         )) {
-            alert("Para emprendimientos ya iniciados, debes completar toda la información sobre tu negocio.");
+            alert("Completa la información del negocio.");
             return;
         }
     
-        console.log("Datos enviados al backend:", JSON.stringify(formData));
+        const telefonoCompleto = `+${indicativoPais(formData.pais)}${formData.telefono.replace(/\D/g, "")}`;
+        const datosAEnviar = {
+            ...formData,
+            telefono: telefonoCompleto,
+            tipoemprendimiento: formData.tipoemprendimiento.trim()
+        };
     
         try {
-            console.log("Datos enviados al backendddddddddddddddddddddddddd:", formData);
             const response = await fetch("http://127.0.0.1:8000/api/usuarios/", {
                 method: "POST",
                 headers: {
@@ -232,18 +221,18 @@ const Formulario = () => {
                     "X-CSRFToken": getCookie("csrftoken"),
                 },
                 credentials: "include",
-                body: JSON.stringify(formData)
+                body: JSON.stringify(datosAEnviar)
             });
     
-            // Manejo mejorado de la respuesta
             const responseData = await response.text();
-            
+    
             try {
                 const jsonData = JSON.parse(responseData);
                 if (!response.ok) {
                     throw new Error(jsonData.message || "Error en el servidor");
                 }
-                alert("Formulario enviado con éxito: " + JSON.stringify(jsonData));
+                alert("✅ Tu formulario fue enviado exitosamente.");
+
             } catch (e) {
                 console.error("El servidor devolvió:", responseData);
                 throw new Error("La respuesta no es JSON válido: " + responseData.substring(0, 100));
@@ -253,6 +242,9 @@ const Formulario = () => {
             alert("Error: " + error.message);
         }
     };
+    
+    
+    
     
     return (
         <form onSubmit={handleSubmit}>
@@ -345,7 +337,7 @@ const Formulario = () => {
             {formData.estado_emprendimiento && formData.estado_emprendimiento !== "AÚN NO INICIO MI EMPRENDIMIENTO" && (
                 <>
                     <label>Mi emprendimiento se centra en:</label>
-                    <select name="tipoEmprendimiento" value={formData.tipoEmprendimiento} onChange={handleChange} required>
+                    <select name="tipoemprendimiento" value={formData.tipoemprendimiento} onChange={handleChange} required>
                         <option value="">Selecciona una opción</option>
                         <option value="PRODUCTOS">PRODUCTOS</option>
                         <option value="SERVICIOS">SERVICIOS</option>
@@ -353,7 +345,7 @@ const Formulario = () => {
 
                     <label>Categoría:</label>
                     <select name="titulo" value={formData.titulo} onChange={handleChange} required>
-                        {formData.tipoEmprendimiento === ""
+                        {formData.tipoemprendimiento === ""
                             ? <option value="">Debes escoger primero una opción de la casilla anterior</option>
                             : <>
                                 <option value="">Selecciona un título</option>
@@ -400,11 +392,11 @@ const Formulario = () => {
 
             <label>Descripción del proyecto que tienes o quieres:</label>
             <textarea
-                id="descripcionProyecto"
-                name="descripcionProyecto"
+                id="descripcion"
+                name="descripcion"
                 placeholder="Describe brevemente el proyecto que tienes o quisieras unirte (máximo 800 caracteres)"
                 maxLength={800}
-                value={formData.descripcionProyecto}
+                value={formData.descripcion}
                 onChange={handleChange}
                 required
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -417,3 +409,63 @@ const Formulario = () => {
 };
 
 export default Formulario;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const productos = {
+    "ALIMENTOS Y BEBIDAS": "Aceites, vinagres y condimentos, Alimentos deshidratados y enlatados, Alimentos frescos (frutas/verduras), Alimentos vegetarianos veganos gourmet y orgánicos, Alimentos precocinados y/o congelados, Bebidas alcohólicas, Bebidas energéticas, Bebidas isotónicas, Café té y mate, Cereales y granos, Chocolates dulces y postres, Restaurante (cualquier tipo), Harinas y mezclas, Helados y postres, Miel y derivados, Panadería y repostería, Pastas y arroces, Productos lácteos, Snacks y botanas",
+    "MODA Y ACCESORIOS": "Accesorios para cabello, Bisutería, Bolsos y carteras, Calzado, Cinturones, Gafas de sol, Gorros y sombreros, Joyería Lencería, Moda infantil, Moda masculina, Moda femenina, Relojes, Ropa de baño, Ropa deportiva, Ropa interior, Ropa para bebés, Ropa de trabajo, Almacén o fábrica de ropa (cualquier tipo)",
+    "HOGAR Y JARDÍN": "Aire acondicionado, Alfombras y tapetes, Artículos de baño, Calefacción, Cortinas y persianas, Decoración navideña, Electrodomésticos, Iluminación, Jardinería, Productos de limpieza del hogar, Muebles de exterior, Organizadores, Paisajismo, Plantas artificiales, Productos de lavandería, Sistemas de riego, Textiles para hogar, Utensilios de cocina, Cualquier tipo de producto de esta categoría.",
+    "TECNOLOGÍA Y ELECTRÓNICA": "Accesorios de audio, Cámaras de seguridad, Drones, Electrónica para automóviles, Equipos de redes, GPS y navegación, Impresoras 3D, Realidad virtual, Smartwatches, Tarjetas de memoria, Cualquier tipo de producto de esta categoría",
+    "DEPORTES Y AIRE LIBRE": "Artículos deportivos",
+    "AUTOMOTRIZ Y TRANSPORTE": "Accesorios para vehículos",
+    "INDUSTRIA Y CONSTRUCCIÓN": "Publicidad, Estampados, Materiales Cualquier tipo de producto de esta categoría",
+    "SALUD Y BELLEZA": "Artículos de salud y belleza, Cualquier tipo de producto de esta categoría",
+    "INFANTIL": "Artículos infantiles, Cualquier tipo de producto de esta categoría",
+    "MASCOTAS": "Aseo para mascotas, Artículos para mascotas, Alimento para mascotas, Ropa para mascotas, Cualquier tipo de producto de esta categoría",
+    "OFICINA": "Artículos de oficina",
+    "ARTE": "Artículos para arte",
+    "SEGURIDAD": "Artículos de seguridad",
+    "EVENTOS Y CELEBRACIONES": "Artículos para eventos y celebraciones",
+    "PRODUCTOS ESPECIALIZADOS": "Artículos religiosos, Cualquier tipo de producto de esta categoría",
+    "PRODUCTOS PARA ADULTOS": "Cualquier tipo de producto de esta categoría",
+    "OTROS ARTÍCULOS": "Otros artículos"
+};
+
+const servicios = {
+    "ASESORIA Y CONSULTA": "Consultoría empresarial, Asesoría financiera, Asesoría legal, Asesoría o Coaching personal y profesional, Consultoría en marketing, Asesoría de las ingenierías, Cualquier otro servicio de esta categoría",
+    "SALUD Y BIENESTAR": "Servicios médicos, Terapias alternativas (acupuntura, masajes), Psicología y consejería, Nutrición y dietética, Servicios de yoga y meditación, Cualquier otro servicio de esta categoría",
+    "EDUCACIÓN": "Tutorías académicas, Cursos en línea, Capacitación profesional, Enseñanza de idiomas, Asesoramiento educativo, Cualquier otro servicio de esta categoría",
+    "TECNOLOGÍA Y DIGITAL": "Desarrollo de software, Diseño web, Servicios de ciberseguridad, Optimización SEO, Creación de contenido digital, Cualquier otro servicio de esta categoría",
+    "MARKETING Y PUBLICIDAD": "Gestión de redes sociales, Diseño gráfico, Producción audiovisual, Estrategias publicitarias, Análisis de mercado, Cualquier otro servicio de esta categoría",
+    "LOGÍSTICA Y TRANSPORTE": "Transporte de carga, Servicios de mensajería, Almacenamiento y distribución, Mudanzas, Transporte turístico, Cualquier otro servicio de esta categoría",
+    "TURISMO Y HOSPITALIDAD": "Guías turísticas, Servicios hoteleros, Organización de eventos, Restauración y catering, Reservas de viajes, Cualquier otro servicio de esta categoría",
+    "HOGAR Y MANTENIMIENTO": "Reparaciones domésticas, Limpieza profesional, Jardinería y paisajismo, Mantenimiento de electrodomésticos, Servicios de plomería y electricidad, Cualquier otro servicio de esta categoría",
+    "ARTE Y ENTRETENIMIENTO": "Producción musical, Fotografía y videografía, Organización de espectáculos, Servicios de escritura creativa, Artes visuales y diseño, Cualquier otro servicio de esta categoría",
+    "OTROS SERVICIOS": "Servicios de mascotas (cuidado, entrenamiento), Servicios funerarios, Servicios especializados (por ejemplo, traducción), Servicios de alquiler (vehículos, equipos), Cualquier otro servicio de esta categoría",
+};
